@@ -1,0 +1,34 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: registrodeponto-private-lb
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: nlb
+    service.beta.kubernetes.io/aws-load-balancer-internal: 0.0.0.0/0
+spec:
+  selector:
+    app: registrodeponto
+  ports:
+    - name: porta-ponto
+      protocol: TCP
+      port: 8083
+      targetPort: porta-ponto
+  type: LoadBalancer
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: registrodeponto-public-lb
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: nlb
+spec:
+  selector:
+    app: registrodeponto
+  ports:
+    - name: porta-ponto
+      protocol: TCP
+      port: 8083
+      targetPort: porta-ponto
+  type: LoadBalancer

@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registrodeponto
+  labels:
+    app: registrodeponto
+    tier: frontend
+spec:
+  selector:
+    matchLabels:
+      app: registrodeponto
+      tier: frontend
+  replicas: 0
+  template:
+    metadata:
+      labels:
+        app: registrodeponto
+        tier: frontend
+    spec:
+      containers:
+        - name: registrodeponto
+          image: 751916211357.dkr.ecr.us-east-1.amazonaws.com/hackathon-registro-de-ponto
+          ports:
+            - name: porta-pronto
+              containerPort: 80
+          resources:
+            requests:
+              memory: 128Mi
+              cpu: 250m
+            limits:
+              memory: 128Mi
+              cpu: 250m
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: role
+                    operator: In
+                    values:
+                      - general
