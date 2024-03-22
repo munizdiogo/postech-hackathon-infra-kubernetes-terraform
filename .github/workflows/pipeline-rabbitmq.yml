@@ -1,0 +1,42 @@
+name: pipeline-rabbitmq
+
+on:
+  repository_dispatch:
+    types: [pipeline-rabbitmq]
+
+  workflow_dispatch:
+
+env:
+  AWS_DEFAULT_REGION: us-east-1
+  EKS_CLUSTER_NAME: postech
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Apply necessary permissions
+        run: chmod +x scripts/*.sh
+
+      - name: Configure AWS CLI
+        run: |
+          sudo apt install -y awscli
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set default_region_name ${{ secrets.AWS_DEFAULT_REGION_NAME }}
+          aws configure set default_output_format JSON
+
+      - name: Install docker desktop
+        run: scripts/install-docker-desktop.sh
+
+      - name: Install kubectl
+        run: scripts/install-kubectl.sh
+
+      - name: Update kubeconfig
+        run: aws eks --region ${{ env.AWS_DEFAULT_REGION }} update-kubeconfig --name ${{ env.EKS_CLUSTER_NAME }}
+
+      - name: Run kubectl commands
+        run: scripts/kubectl-commands-rabbitmq.sh
