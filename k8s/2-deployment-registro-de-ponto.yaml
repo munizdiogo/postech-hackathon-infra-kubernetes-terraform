@@ -11,7 +11,7 @@ spec:
     matchLabels:
       app: registrodeponto
       tier: frontend
-  replicas: 0
+  replicas: 1
   template:
     metadata:
       labels:
