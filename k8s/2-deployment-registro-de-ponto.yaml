@@ -22,7 +22,7 @@ spec:
         - name: registrodeponto
           image: 751916211357.dkr.ecr.us-east-1.amazonaws.com/hackathon-registro-de-ponto
           ports:
-            - name: porta-pronto
+            - name: porta-ponto
               containerPort: 80
           resources:
             requests:
