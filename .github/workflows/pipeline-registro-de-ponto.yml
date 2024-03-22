@@ -47,7 +47,7 @@ jobs:
 
       - name: Create kubectl secrets
         run: |
-          # kubectl delete secret my-secrets
+          kubectl delete secret my-secrets
           kubectl create secret generic my-secrets --from-literal=AWS_ACCESS_KEY_ID=${{secrets.AWS_ACCESS_KEY_ID}} --from-literal=AWS_SECRET_ACCESS_KEY=${{secrets.AWS_SECRET_ACCESS_KEY}}
 
       - name: Run kubectl commands
